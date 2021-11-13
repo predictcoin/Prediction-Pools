@@ -2,15 +2,24 @@ import { ethers, upgrades } from "hardhat"
 
 async function main() {
   // We get the contract to deploy
-  const Farm = await ethers.getContractFactory("MasterPred");
-  const farm = await upgrades.upgradeProxy("",
-    Farm, {kind: "uups"}
+  const LoserFarm = await ethers.getContractFactory("LoserPredictionPoo");
+  const WinnerFarm = await ethers.getContractFactory("WinnerPredictionPoo");
+  const winnerFarm = await upgrades.upgradeProxy("",
+    WinnerFarm, {kind: "uups"}
+  );
+  const loserFarm = await upgrades.upgradeProxy("",
+    LoserFarm, {kind: "uups"}
   );
 
-  console.log(`Farm implementation deployed to:${await ethers.provider.getStorageAt(
-    "",
+  console.log(`WinnerFarm implementation deployed to:${await ethers.provider.getStorageAt(
+    process.env.WINNER_POOL_ADDRESS,
     "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
-    )}`);
+  )}`);
+  
+  console.log(`LoserFarm implementation deployed to:${await ethers.provider.getStorageAt(
+    process.env.LOSER_POOL_ADDRESS,
+    "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
+  )}`);
 }
 
 main()

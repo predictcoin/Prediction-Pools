@@ -4,7 +4,7 @@ import { Signer, Contract, BigNumber as _BigNumber, BigNumber, ContractFactory }
 
 let Wallet: ContractFactory, wallet: Contract, PrederB: Signer, pred: Contract, Pred: ContractFactory;
 
-describe("MasterPred Wallet Tests", () => {
+describe("Prediction pools Wallet Tests", () => {
   beforeEach( async () => {
     Pred = await ethers.getContractFactory("Predictcoin")
     pred = await Pred.deploy()

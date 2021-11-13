@@ -2,7 +2,9 @@ import "@nomiclabs/hardhat-waffle";
 import '@openzeppelin/hardhat-upgrades'
 import {config} from "dotenv"
 config()
+config({ path: `.env.${process.env.NODE_ENV}` });
 const mnemonic = process.env.MNEMONIC;
+
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
@@ -20,10 +22,27 @@ module.exports = {
       },
       {
         version: "0.8.2",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 99,
+          },
+        },
       },
     ],
   },
   networks: {
+    hardhat: {
+      forking: {
+        url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
+      },
+      accounts: {
+        mnemonic,
+        path: "m/44'/60'/0'/0",
+        initialIndex: 0,
+        count: 10,
+      },
+    },
     bscTestnet:{
       url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
       chainId: 97,

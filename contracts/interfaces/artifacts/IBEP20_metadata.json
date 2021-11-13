@@ -238,18 +238,18 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
-			"runs": 200
+			"enabled": true,
+			"runs": 99
 		},
 		"remappings": []
 	},
 	"sources": {
 		"contracts/interfaces/IBEP20.sol": {
-			"keccak256": "0xa8a8bc39168156141fc78a47caf8ee13e630031ef870e74f3fd5658904e71172",
+			"keccak256": "0x57576b76dbb47abfeb4b84ee2f4e9bbfb94ff5119e3911c7f8fcdaf25bef81bc",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://0d35923e72ea258c1037e82dc0149af16ad82047e7d6147069d299c687f7817a",
-				"dweb:/ipfs/Qmah7tS38vUoA3m8TCrgX5HYyVmpgcxdJPvRK3WbKf1Q6M"
+				"bzz-raw://7ddf6a60187d485cbccd74a90fe27165eae29180e09f3ed8b99c68ed2ea14c5a",
+				"dweb:/ipfs/QmZB57BtNdBrhZ9kiqGoSzmHVGevTmcF9Y6ZGarJgkZeTv"
 			]
 		}
 	},
