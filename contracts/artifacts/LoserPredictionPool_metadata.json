@@ -387,7 +387,7 @@
 						"type": "address"
 					}
 				],
-				"name": "pendingPred",
+				"name": "pendingBNB",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -426,6 +426,11 @@
 					{
 						"internalType": "uint256",
 						"name": "epoch",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
 						"type": "uint256"
 					}
 				],
@@ -875,11 +880,11 @@
 			]
 		},
 		"contracts/LoserPredictionPool.sol": {
-			"keccak256": "0xc2683813b849d69a2c34e5a705e5d6f46e4d1551f93e8e41bc9fd36b880f8ec4",
+			"keccak256": "0x16a66ea3c05bf21d27d713f890f438bf369791cdf5138d0c167dd5d137df11b3",
 			"license": "Unlicensed",
 			"urls": [
-				"bzz-raw://b89c9a33b49f4a9f1ed1646c0a625c2c176856f84b617d428a339b84047517e7",
-				"dweb:/ipfs/QmXXkHnVQJeTSMXp7FkPNAPA2e98wxDjQDBrCNMdi7eH7f"
+				"bzz-raw://f0d2abc4131573343b2338169bae5e7e46dd575016bc7d4a0eabc208aa744e81",
+				"dweb:/ipfs/QmbvdogHeXD5w8mmk9CUdRWkjcAHBi5yT4kqpUFQNx7bt7"
 			]
 		},
 		"contracts/PredictionWallet.sol": {

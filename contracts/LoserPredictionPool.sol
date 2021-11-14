@@ -43,6 +43,7 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
         uint256 lastRewardBlock; // Last block number that PREDs distribution occurs.
         uint256 accBNBPerShare; // Accumulated PREDs per share, times 1e12. See below.
         uint256 epoch; // epoch of round winners that can stake
+        uint256 amount;
     }
 
     // The PRED TOKEN!
@@ -141,7 +142,8 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
                 allocPoint: _allocPoint,
                 epoch: epoch,
                 lastRewardBlock: lastRewardBlock,
-                accBNBPerShare: 0
+                accBNBPerShare: 0,
+                amount: 0
             })
         );
     }
@@ -166,7 +168,7 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
     }
 
     // View function to see pending BNB on frontend.
-    function pendingPred(uint256 _pid, address _user)
+    function pendingBNB(uint256 _pid, address _user)
         external
         view
         returns (uint256)
@@ -253,9 +255,13 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
             user.amount = user.amount.add(
                 pred.balanceOf(address(this)).sub(balBefore)
             );
+            pool.amount = pool.amount.add(
+                pred.balanceOf(address(this)).sub(balBefore)
+            );
             require(user.amount <= maxPredDeposit, "Max PRED Deposit Reached");
         }
         user.rewardDebt = user.amount.mul(pool.accBNBPerShare).div(1e30);
+        poolInfo[_pid] = pool;
         emit Deposit(msg.sender, _pid, _amount);
     }
 
@@ -274,9 +280,11 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
         }
         if (_amount > 0) {
             user.amount = user.amount.sub(_amount);
+            pool.amount = pool.amount.sub(_amount);
             pred.safeTransfer(address(msg.sender), _amount);
         }
         user.rewardDebt = user.amount.mul(pool.accBNBPerShare).div(1e30);
+        poolInfo[_pid] = pool;
         emit Withdraw(msg.sender, _pid, _amount);
     }
     
@@ -312,6 +320,14 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
     
     function getPoolLength() public view returns(uint256){
         return poolInfo.length;
+    }
+
+    function wonRound(address preder, uint round) external view returns(bool){
+        return prediction.wonRound(preder, round);
+    }
+
+    function lostRound(address preder, uint round) external view returns(bool){
+        return prediction.lostRound(preder, round);
     }
 
     //pause deposits and withdrawals and allow only emergency withdrawals(forfeit funds)

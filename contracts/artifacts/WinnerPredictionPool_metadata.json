@@ -414,6 +414,11 @@
 						"internalType": "uint256",
 						"name": "epoch",
 						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -883,11 +888,11 @@
 			]
 		},
 		"contracts/WinnerPredictionPool.sol": {
-			"keccak256": "0x11156ddcda7f27838fa2e336e93117ce1cd9a7c6767df4b1bf6df57c44a306ad",
+			"keccak256": "0xc3ba64b16efdfaf704b2a5bfc9a8d0e4e1b6dbd6b88dd0bab65f3716078bc8b9",
 			"license": "Unlicensed",
 			"urls": [
-				"bzz-raw://887f4115c3d68d93683ea40bab6fedf9907373e340f8958e31433bc66a6c28e2",
-				"dweb:/ipfs/Qme1mpDBv5VxsvJMrqLYu9guqSmKNcZv5cKXBiNRBU6Sme"
+				"bzz-raw://17aa3e38772d2d25f27e1321a8c3b8e705f0589f830930f70abca633d7d1ddc1",
+				"dweb:/ipfs/QmWJzv7faHzcSdn5GiSHZjC8kFAqr2wCNe8xqgQuznFRjQ"
 			]
 		},
 		"contracts/interfaces/IBEP20.sol": {

@@ -191,7 +191,7 @@ describe("Prediction Pool Contract Tests", () => {
   //     expect(userInfo.amount).to.equal(depositA)
   //     expect(userInfo.rewardDebt).to.equal(0)
   //     expect(await farm.totalRewardDebt()).to.equal(0)
-  //     expect(await farm.pendingPred(0, await PrederA.getAddress())).to.equal(0)
+  //     expect(await farm.pendingBNB(0, await PrederA.getAddress())).to.equal(0)
   //   })
 
   //   it("should update pool", async () => {
@@ -206,7 +206,7 @@ describe("Prediction Pool Contract Tests", () => {
   //     const user = await farm.userInfo(0, await PrederA.getAddress())
   //     const pool = await farm.poolInfo(0)
   //     const pending = (multiplier*predPerBlock).toString();
-  //     expect(await farm.pendingPred(0, await PrederA.getAddress()))
+  //     expect(await farm.pendingBNB(0, await PrederA.getAddress()))
   //       .to.equal(
   //         user.amount.mul(pool.accBNBPerShare).div((BigNumber.from(10).pow(30))).sub(user.rewardDebt)
   //       )
@@ -214,7 +214,7 @@ describe("Prediction Pool Contract Tests", () => {
 
   //   it("it should withdraw user rewards with withdraw function", async () => {
   //     await pred.transfer(wallet.address, (10**17).toString());
-  //     const pending: BigNumber = await farm.pendingPred(0, await PrederA.getAddress());
+  //     const pending: BigNumber = await farm.pendingBNB(0, await PrederA.getAddress());
   //     let user = await farm.userInfo(0, await PrederA.getAddress())
 
   //     await expect(() => farm.withdraw(0, 0))
@@ -225,13 +225,13 @@ describe("Prediction Pool Contract Tests", () => {
   //     user = await farm.userInfo(0, await PrederA.getAddress())
   //     expect(user.amount).to.equal(depositA)
   //     expect(user.rewardDebt).to.equal(pending.mul(2))
-  //     expect(await farm.pendingPred(0, await PrederA.getAddress())).to.equal(0);
+  //     expect(await farm.pendingBNB(0, await PrederA.getAddress())).to.equal(0);
   //     expect(await farm.totalRewardDebt()).to.equal(0)
   //   })
 
   //   it("it should withdraw user rewards with deposit function", async () => {
   //     await pred.transfer(wallet.address, (10**17).toString());
-  //     const pending: BigNumber = await farm.pendingPred(0, await PrederA.getAddress());
+  //     const pending: BigNumber = await farm.pendingBNB(0, await PrederA.getAddress());
 
   //     await expect(() => farm.deposit(0, 0))
   //       .to.changeTokenBalances(
@@ -249,7 +249,7 @@ describe("Prediction Pool Contract Tests", () => {
 
   //   it("it should withdraw user balance and rewards", async () => {
   //     await pred.transfer(wallet.address, (10**17).toString());
-  //     const pending: BigNumber = await farm.pendingPred(0, await PrederA.getAddress());
+  //     const pending: BigNumber = await farm.pendingBNB(0, await PrederA.getAddress());
   //     let user = await farm.userInfo(0, await PrederA.getAddress())
   //     await farm.withdraw(0, depositA)
   //     user = await farm.userInfo(0, await PrederA.getAddress())
@@ -282,11 +282,11 @@ describe("Prediction Pool Contract Tests", () => {
 
   //   it("should update user info", async () => {
   //     const userInfo = await farm.userInfo(0, await PrederA.getAddress())
-  //     const pending = await farm.pendingPred(0, await PrederA.getAddress());
+  //     const pending = await farm.pendingBNB(0, await PrederA.getAddress());
   //     expect(userInfo.amount).to.equal(depositA)
   //     expect(userInfo.rewardDebt).to.equal(0)
   //     expect(await farm.totalRewardDebt()).to.equal(pending)
-  //     expect(await farm.pendingPred(0, await PrederA.getAddress())).to.equal(pending);
+  //     expect(await farm.pendingBNB(0, await PrederA.getAddress())).to.equal(pending);
   //   })
 
   //   it("should update pool", async () => {

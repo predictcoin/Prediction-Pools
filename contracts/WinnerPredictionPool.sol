@@ -43,6 +43,7 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
         uint256 lastRewardBlock; // Last block number that PREDs distribution occurs.
         uint256 accPredPerShare; // Accumulated PREDs per share, times 1e12. See below.
         uint256 epoch; // epoch of round winners that can stake
+        uint256 amount;
     }
 
     // The PRED TOKEN!
@@ -142,7 +143,8 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
                 allocPoint: _allocPoint,
                 epoch: epoch,
                 lastRewardBlock: lastRewardBlock,
-                accPredPerShare: 0
+                accPredPerShare: 0,
+                amount: 0
             })
         );
     }
@@ -254,9 +256,13 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
             user.amount = user.amount.add(
                 pred.balanceOf(address(this)).sub(balBefore)
             );
+            pool.amount = pool.amount.add(
+                pred.balanceOf(address(this)).sub(balBefore)
+            );
             require(user.amount <= maxPredDeposit, "Max PRED Deposit Reached");
         }
         user.rewardDebt = user.amount.mul(pool.accPredPerShare).div(1e30);
+        poolInfo[_pid] = pool;
         emit Deposit(msg.sender, _pid, _amount);
     }
 
@@ -275,9 +281,11 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
         }
         if (_amount > 0) {
             user.amount = user.amount.sub(_amount);
+            pool.amount = pool.amount.sub(_amount);
             pred.safeTransfer(address(msg.sender), _amount);
         }
         user.rewardDebt = user.amount.mul(pool.accPredPerShare).div(1e30);
+        poolInfo[_pid] = pool;
         emit Withdraw(msg.sender, _pid, _amount);
     }
     
@@ -299,6 +307,7 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
         pred.safeTransfer(address(msg.sender), amount);
         emit EmergencyWithdraw(msg.sender, _pid, amount);
     }
+
     
     // Safe pred transfer function, just in case if rounding error causes pool to not have enough PREDs.
     function safePredTransfer(address _to, uint256 _amount) internal {
@@ -313,6 +322,14 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
     
     function getPoolLength() public view returns(uint256){
         return poolInfo.length;
+    }
+
+    function wonRound(address preder, uint round) external view returns(bool){
+        return prediction.wonRound(preder, round);
+    }
+
+    function lostRound(address preder, uint round) external view returns(bool){
+        return prediction.lostRound(preder, round);
     }
 
     //pause deposits and withdrawals and allow only emergency withdrawals(forfeit funds)
