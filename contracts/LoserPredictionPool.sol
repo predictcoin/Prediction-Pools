@@ -69,6 +69,8 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
     // Amount of Predictioin wallet balance already allocated to pools
     uint256 public totalRewardDebt;
 
+    address public operatorAddress;
+
     event Deposit(address indexed user, uint256 indexed pid, uint256 amount);
     event Withdraw(address indexed user, uint256 indexed pid, uint256 amount);
     event EmergencyWithdraw(
@@ -76,8 +78,15 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
         uint256 indexed pid,
         uint256 amount
     );
+    event NewOperatorAddress(address operator);
+
+    modifier onlyOperator() {
+        require(msg.sender == operatorAddress, "Not operator");
+        _;
+    }
 
     function initialize(
+        address _operator,
         IBEP20 _pred,
         uint256 _bnbPerBlock,
         uint256 _startBlock,
@@ -86,6 +95,8 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
         IPrediction _prediction
     ) external initializer {
         __Ownable_init();
+
+        operatorAddress = _operator;
         pred = _pred;
         bnbPerBlock = _bnbPerBlock;
         startBlock = _startBlock;
@@ -108,7 +119,7 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
         return poolInfo.length;
     }
     
-    function add(uint _epoch) external onlyOwner {
+    function add(uint _epoch) external onlyOperator {
         // get Round for pid
         (,,,, bool oraclesCalled1,,,,,,) = prediction.getRound(_epoch);
         require(oraclesCalled1, "Round was not successful or not complete");
@@ -316,6 +327,17 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
     
     function setMaxPredDeposit(uint _maxPredDeposit) external {
         maxPredDeposit = _maxPredDeposit;
+    }
+
+        /**
+     * @notice Set operator address
+     * @dev Callable by owner
+     */
+    function setOperator(address _operatorAddress) external onlyOwner {
+        require(_operatorAddress != address(0), "Cannot be zero address");
+        operatorAddress = _operatorAddress;
+
+        emit NewOperatorAddress(_operatorAddress);
     }
     
     function getPoolLength() public view returns(uint256){

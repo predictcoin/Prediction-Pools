@@ -91,6 +91,19 @@
 				"anonymous": false,
 				"inputs": [
 					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "operator",
+						"type": "address"
+					}
+				],
+				"name": "NewOperatorAddress",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
 						"indexed": true,
 						"internalType": "address",
 						"name": "previousOwner",
@@ -280,6 +293,11 @@
 			{
 				"inputs": [
 					{
+						"internalType": "address",
+						"name": "_operator",
+						"type": "address"
+					},
+					{
 						"internalType": "contract IBEP20",
 						"name": "_pred",
 						"type": "address"
@@ -316,6 +334,30 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "preder",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "round",
+						"type": "uint256"
+					}
+				],
+				"name": "lostRound",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "maxPredDeposit",
 				"outputs": [
@@ -323,6 +365,19 @@
 						"internalType": "uint256",
 						"name": "",
 						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "operatorAddress",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
 					}
 				],
 				"stateMutability": "view",
@@ -510,6 +565,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_operatorAddress",
+						"type": "address"
+					}
+				],
+				"name": "setOperator",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "startBlock",
 				"outputs": [
@@ -671,6 +739,30 @@
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "preder",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "round",
+						"type": "uint256"
+					}
+				],
+				"name": "wonRound",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -684,6 +776,9 @@
 				},
 				"renounceOwnership()": {
 					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+				},
+				"setOperator(address)": {
+					"details": "Callable by admin"
 				},
 				"transferOwnership(address)": {
 					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
@@ -699,7 +794,11 @@
 		},
 		"userdoc": {
 			"kind": "user",
-			"methods": {},
+			"methods": {
+				"setOperator(address)": {
+					"notice": "Set operator address"
+				}
+			},
 			"version": 1
 		}
 	},
@@ -888,11 +987,11 @@
 			]
 		},
 		"contracts/WinnerPredictionPool.sol": {
-			"keccak256": "0xc3ba64b16efdfaf704b2a5bfc9a8d0e4e1b6dbd6b88dd0bab65f3716078bc8b9",
+			"keccak256": "0x6a39435c921a1353e2e81980c695f8c779a45688a17f2f0ed38997e7b763e132",
 			"license": "Unlicensed",
 			"urls": [
-				"bzz-raw://17aa3e38772d2d25f27e1321a8c3b8e705f0589f830930f70abca633d7d1ddc1",
-				"dweb:/ipfs/QmWJzv7faHzcSdn5GiSHZjC8kFAqr2wCNe8xqgQuznFRjQ"
+				"bzz-raw://62d7870f693fffb4fbe23c26cb7b69f59de98aef2041a4dfe6c43e5192d8d826",
+				"dweb:/ipfs/QmQ7YDyfWqKWVya91md82pNz1hz1aqvw5xzfLZ3ebh7rVE"
 			]
 		},
 		"contracts/interfaces/IBEP20.sol": {

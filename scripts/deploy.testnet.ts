@@ -3,6 +3,7 @@ import { ethers, upgrades } from "hardhat"
 async function main() {
   // We get the contract to deploy
   const predAddress = process.env.PRED_ADDRESS;
+  const operator = process.env.OPERATOR;
   const predPerBlock = 3750000000;
   const bnbPerBlock = 10000000;
 
@@ -10,9 +11,9 @@ async function main() {
   const wallet = await Wallet.deploy(predAddress);
   const LoserFarm = await ethers.getContractFactory("LoserPredictionPool");
   const WinnerFarm = await ethers.getContractFactory("WinnerPredictionPool");
-  const loserFarm = await upgrades.deployProxy(LoserFarm, [predAddress, bnbPerBlock, 0, ethers.utils.parseEther("100"), wallet.address, 
+  const loserFarm = await upgrades.deployProxy(LoserFarm, [operator, predAddress, bnbPerBlock, 0, ethers.utils.parseEther("100"), wallet.address, 
     process.env.PREDICTION_CONTRACT_ADDRESS], {kind: "uups"})
-  const winnerFarm = await upgrades.deployProxy(WinnerFarm, [predAddress, predPerBlock, 0, ethers.utils.parseEther("100"), wallet.address, 
+  const winnerFarm = await upgrades.deployProxy(WinnerFarm, [operator, predAddress, predPerBlock, 0, ethers.utils.parseEther("100"), wallet.address, 
     process.env.PREDICTION_CONTRACT_ADDRESS], {kind: "uups"})
   await wallet.grantRole(ethers.utils.formatBytes32String("loserPredictionPool"), loserFarm.address);
   await wallet.grantRole(ethers.utils.formatBytes32String("winnerPredictionPool"), winnerFarm.address);

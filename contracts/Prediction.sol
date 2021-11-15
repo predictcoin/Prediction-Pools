@@ -581,9 +581,8 @@ contract Prediction is
     }
     
     /**
-     * @notice Checks if an address won the last round
+     * @notice Checks if an address won a round
     */
-    
     function wonRound(address preder, uint round) external view returns(bool){
         BetInfo memory betInfo =  ledger[round][preder];
         if( betInfo.token == address(0) || // checks if preder predicted 
@@ -600,6 +599,9 @@ contract Prediction is
         return betInfo.position == pos;
     }    
     
+    /**
+     * @notice Checks if an address lost a round
+    */
     function lostRound(address preder, uint round) external view returns(bool){
         BetInfo memory betInfo =  ledger[round][preder];
         if( betInfo.token == address(0) || // checks if preder predicted
