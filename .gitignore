@@ -1,6 +1,8 @@
-node_modules
+node_modules/
 PredToken.sol
 BEP20.sol
 .env
 .env.development
 .env.production
+artifacts/**
+.openzeppelin/**
