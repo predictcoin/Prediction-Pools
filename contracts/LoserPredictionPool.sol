@@ -119,7 +119,7 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
         return poolInfo.length;
     }
     
-    function add(uint _epoch) external onlyOperator {
+    function add(uint _epoch) external {
         // get Round for pid
         (,,,, bool oraclesCalled1,,,,,,) = prediction.getRound(_epoch);
         require(oraclesCalled1, "Round was not successful or not complete");
@@ -144,7 +144,7 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
     function _add(
         uint256 _allocPoint,
         uint256 epoch
-    ) internal onlyOwner {
+    ) internal onlyOperator {
         uint256 lastRewardBlock = block.number > startBlock
             ? block.number
             : startBlock;
@@ -194,9 +194,7 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
                 block.number
             );
             uint256 bnbReward = multiplier
-            .mul(bnbPerBlock)
-            .mul(pool.allocPoint)
-            .div(allocPoint);
+            .mul(bnbPerBlock);
 
             uint256 bnbBal = (address(wallet).balance).sub(
                 totalRewardDebt
@@ -224,9 +222,7 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
         }
         uint256 multiplier = getMultiplier(pool.lastRewardBlock, block.number);
         uint256 predReward = multiplier
-            .mul(bnbPerBlock)
-            .mul(pool.allocPoint)
-            .div(allocPoint);
+            .mul(bnbPerBlock);
         uint256 bnbBal = (address(wallet).balance).sub(totalRewardDebt);
         if (predReward >= bnbBal) {
             predReward = bnbBal;
@@ -241,11 +237,11 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
 
     // Deposit LP tokens to PredictionWallet for PRED allocation.
     function deposit(uint256 _pid, uint256 _amount) public whenNotPaused {
-        PoolInfo memory pool = poolInfo[_pid];
+        updatePool(_pid);
+        PoolInfo storage pool = poolInfo[_pid];
         require(prediction.lostRound(msg.sender, pool.epoch), "Did not lose this Prediction round");
 
         UserInfo storage user = userInfo[_pid][msg.sender];
-        updatePool(_pid);
         if (user.amount > 0) {
             uint256 pending = user
             .amount

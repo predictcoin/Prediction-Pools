@@ -118,7 +118,7 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
         return poolInfo.length;
     }
     
-    function add(uint _epoch) external onlyOperator {
+    function add(uint _epoch) external {
         // get Round for pid
         (,,,, bool oraclesCalled1,,,,,,) = prediction.getRound(_epoch);
         require(oraclesCalled1, "Round was not successful or not complete");
@@ -143,7 +143,7 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
     function _add(
         uint256 _allocPoint,
         uint256 epoch
-    ) internal onlyOwner {
+    ) internal onlyOperator {
         uint256 lastRewardBlock = block.number > startBlock
             ? block.number
             : startBlock;
@@ -193,9 +193,7 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
                 block.number
             );
             uint256 predReward = multiplier
-            .mul(predPerBlock)
-            .mul(pool.allocPoint)
-            .div(allocPoint);
+            .mul(predPerBlock);
 
             uint256 predBal = pred.balanceOf(address(wallet)).sub(
                 totalRewardDebt
@@ -223,9 +221,7 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
         }
         uint256 multiplier = getMultiplier(pool.lastRewardBlock, block.number);
         uint256 predReward = multiplier
-            .mul(predPerBlock)
-            .mul(pool.allocPoint)
-            .div(allocPoint);
+            .mul(predPerBlock);
         uint256 predBal = pred.balanceOf(address(wallet)).sub(totalRewardDebt);
         if (predReward >= predBal) {
             predReward = predBal;
@@ -240,11 +236,11 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
 
     // Deposit LP tokens to PredictionWallet for PRED allocation.
     function deposit(uint256 _pid, uint256 _amount) public whenNotPaused {
-        PoolInfo memory pool = poolInfo[_pid];
+        updatePool(_pid);
+        PoolInfo storage pool = poolInfo[_pid];
         require(prediction.wonRound(msg.sender, pool.epoch), "Did not win this Prediction round");
         
         UserInfo storage user = userInfo[_pid][msg.sender];
-        updatePool(_pid);
         if (user.amount > 0) {
             uint256 pending = user
             .amount
@@ -271,7 +267,6 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
             require(user.amount <= maxPredDeposit, "Max PRED Deposit Reached");
         }
         user.rewardDebt = user.amount.mul(pool.accPredPerShare).div(1e30);
-        poolInfo[_pid] = pool;
         emit Deposit(msg.sender, _pid, _amount);
     }
 
