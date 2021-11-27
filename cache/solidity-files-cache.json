@@ -869,7 +869,7 @@
       ]
     },
     "/Users/nonse/Desktop/Work/Predictcoin/Prediction pool/contracts/PredictionWallet.sol": {
-      "lastModificationDate": 1636783271615,
+      "lastModificationDate": 1637973518518,
       "contentHash": "09da8a091c67d628c1892f1c1a09883a",
       "sourceName": "contracts/PredictionWallet.sol",
       "solcConfig": {
@@ -1332,7 +1332,7 @@
       ]
     },
     "/Users/nonse/Desktop/Work/Predictcoin/Prediction pool/contracts/LPTokens.sol": {
-      "lastModificationDate": 1636814433123,
+      "lastModificationDate": 1637348516821,
       "contentHash": "f12b2d885a3a50cbbfe2d3c26f134942",
       "sourceName": "contracts/LPTokens.sol",
       "solcConfig": {
@@ -1904,8 +1904,8 @@
       ]
     },
     "/Users/nonse/Desktop/Work/Predictcoin/Prediction pool/contracts/Prediction.sol": {
-      "lastModificationDate": 1636902038381,
-      "contentHash": "0c1b30872930c3b0f4179ca3dc98299d",
+      "lastModificationDate": 1637933480745,
+      "contentHash": "edb0de3cac8ea7185154ba788a314a39",
       "sourceName": "contracts/Prediction.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -1948,8 +1948,8 @@
       ]
     },
     "/Users/nonse/Desktop/Work/Predictcoin/Prediction pool/contracts/WinnerPredictionPool.sol": {
-      "lastModificationDate": 1636956089992,
-      "contentHash": "85d1e7781425e657d3df144236879692",
+      "lastModificationDate": 1638011826160,
+      "contentHash": "f2a3d8ac589c7835507dc28418d02dd8",
       "sourceName": "contracts/WinnerPredictionPool.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -1991,8 +1991,8 @@
       ]
     },
     "/Users/nonse/Desktop/Work/Predictcoin/Prediction pool/contracts/LoserPredictionPool.sol": {
-      "lastModificationDate": 1636956057940,
-      "contentHash": "446281a1ec880d088d7eb8938e46a5ec",
+      "lastModificationDate": 1638011834704,
+      "contentHash": "225a6de436d5143fbf3817da34364add",
       "sourceName": "contracts/LoserPredictionPool.sol",
       "solcConfig": {
         "version": "0.8.2",
