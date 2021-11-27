@@ -159,12 +159,18 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
     }
 
     // Update the given pool's PRED allocation point. Can only be called by the owner.
-    function setAllocPoint(
+    function setPoolAllocPoint(
         uint256 _allocPoint
     ) public onlyOwner {
         uint poolId = poolInfo.length-1;
         updatePool(poolId);
         poolInfo[poolId].allocPoint = _allocPoint;
+    }
+
+    // Update the allocPoint.Can only be called by the Owner.
+    function setAllocPoint(
+        uint256 _allocPoint
+    ) public onlyOwner {
         allocPoint = _allocPoint;
     }
 
