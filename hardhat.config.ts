@@ -50,7 +50,7 @@ module.exports = {
       timeout: 200000
     },
     bscMainnet:{
-      url: "https://bsc-mainnet.web3api.com/v1/Q3SYS628Q7NM9568343JHPK9HBNDRHUZ5K",
+      url: "https://bsc-dataseed1.binance.org",
       chainId: 56,
       accounts: {mnemonic, path: "m/44'/60'/0'/0", inittialIndex: 0, count: 10},
       timeout: 200000

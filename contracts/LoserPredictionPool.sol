@@ -168,7 +168,7 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
         poolInfo[poolId].allocPoint = _allocPoint;
     }
 
-    // Update the allocPoint.Can only be called by the Owner.
+    // Update the allocation point. Can only be called by the owner.
     function setAllocPoint(
         uint256 _allocPoint
     ) public onlyOwner {

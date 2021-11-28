@@ -152,7 +152,7 @@ describe("Prediction Pool Contract Tests", () => {
     expect(pool2.epoch).to.equal(await prediction.currentEpoch());
   })
 
-  it.only("should set allocation point", async () => {
+  it.only("should set farm allocation point", async () => {
     await prediction.startRound();
     await passInterval(network, prediction);
     await prediction.endRound();
@@ -160,8 +160,19 @@ describe("Prediction Pool Contract Tests", () => {
     await farm.add(1);
     await farm.setAllocPoint(10000000);
     const pool = await farm.poolInfo(0);
-    expect(pool.allocPoint).to.equal(200)
-    expect(await farm.allocPoint()).to.equal(10000000)
+    expect(pool.allocPoint).to.equal(200);
+    expect(await farm.allocPoint()).to.equal(10000000);
+  })
+
+  it.only("should set pool allocation point", async () => {
+    await prediction.startRound();
+    await passInterval(network, prediction);
+    await prediction.endRound();
+
+    await farm.add(1);
+    await farm.setPoolAllocPoint(10000000);
+    const pool = await farm.poolInfo(0);
+    expect(pool.allocPoint).to.equal(10000000);
   })
 
   it("should return multiplier across blocks", async () => {

@@ -869,7 +869,7 @@
       ]
     },
     "/Users/nonse/Desktop/Work/Predictcoin/Prediction pool/contracts/PredictionWallet.sol": {
-      "lastModificationDate": 1637973518518,
+      "lastModificationDate": 1638091545226,
       "contentHash": "09da8a091c67d628c1892f1c1a09883a",
       "sourceName": "contracts/PredictionWallet.sol",
       "solcConfig": {
@@ -1948,8 +1948,8 @@
       ]
     },
     "/Users/nonse/Desktop/Work/Predictcoin/Prediction pool/contracts/WinnerPredictionPool.sol": {
-      "lastModificationDate": 1638011826160,
-      "contentHash": "f2a3d8ac589c7835507dc28418d02dd8",
+      "lastModificationDate": 1638092199802,
+      "contentHash": "d9de3a351017d7558c0ff63e3a4c6ed7",
       "sourceName": "contracts/WinnerPredictionPool.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -1991,8 +1991,8 @@
       ]
     },
     "/Users/nonse/Desktop/Work/Predictcoin/Prediction pool/contracts/LoserPredictionPool.sol": {
-      "lastModificationDate": 1638011834704,
-      "contentHash": "225a6de436d5143fbf3817da34364add",
+      "lastModificationDate": 1638092200116,
+      "contentHash": "ac1f1dc45213bcd1847bbbc6c4547da8",
       "sourceName": "contracts/LoserPredictionPool.sol",
       "solcConfig": {
         "version": "0.8.2",

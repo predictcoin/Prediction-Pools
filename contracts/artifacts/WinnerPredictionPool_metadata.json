@@ -578,6 +578,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_allocPoint",
+						"type": "uint256"
+					}
+				],
+				"name": "setPoolAllocPoint",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "startBlock",
 				"outputs": [
@@ -812,8 +825,8 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
-			"runs": 99
+			"enabled": false,
+			"runs": 200
 		},
 		"remappings": []
 	},
@@ -987,11 +1000,11 @@
 			]
 		},
 		"contracts/WinnerPredictionPool.sol": {
-			"keccak256": "0x6a39435c921a1353e2e81980c695f8c779a45688a17f2f0ed38997e7b763e132",
+			"keccak256": "0x09b1e96c63cbde9204610636e1d912fc24e277a6a1db077415ba9de8cb0bd6a8",
 			"license": "Unlicensed",
 			"urls": [
-				"bzz-raw://62d7870f693fffb4fbe23c26cb7b69f59de98aef2041a4dfe6c43e5192d8d826",
-				"dweb:/ipfs/QmQ7YDyfWqKWVya91md82pNz1hz1aqvw5xzfLZ3ebh7rVE"
+				"bzz-raw://09bad387026c4af7313740d57cfce0944b29b4ddbb38582ad6f9c90695004864",
+				"dweb:/ipfs/QmXA5btwgo5UfNhvhjqqmTAQFLQuvCSYWGCvFUbRAMM3Ze"
 			]
 		},
 		"contracts/interfaces/IBEP20.sol": {
