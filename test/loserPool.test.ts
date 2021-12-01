@@ -13,7 +13,7 @@ let signers: Signer[],
   prediction: Contract,
   Prediction: ContractFactory,
   Wallet: ContractFactory;
-const predPerBlock = 1000000000;
+const predPerBlock = 10000000;
 let walletContract: Contract;
 
 type pool = {
@@ -292,13 +292,18 @@ describe("Prediction Pool Contract Tests", () => {
       await farm.deposit(0, depositA);
     })
 
-    it("should update user info", async () => {
+    it.only("should update user info", async () => {
       const userInfo = await farm.userInfo(0, await PrederA.getAddress())
+      
+      await passInterval(network, prediction);
+      await passInterval(network, prediction);
+      await farm.updatePool(0);
       const pending = await farm.pendingBNB(0, await PrederA.getAddress());
-      expect(userInfo.amount).to.equal(depositA)
-      expect(userInfo.rewardDebt).to.equal(0)
-      expect(await farm.totalRewardDebt()).to.equal(pending)
-      expect(await farm.pendingBNB(0, await PrederA.getAddress())).to.equal(pending);
+      console.log(pending);
+      expect(userInfo.amount).to.equal(depositA);
+      expect(userInfo.rewardDebt).to.equal(0);
+      expect(await farm.totalRewardDebt()).to.equal(pending);
+      //expect(await farm.pendingBNB(0, await PrederA.getAddress())).to.equal(pending);
     })
 
     it("should update pool", async () => {
@@ -342,13 +347,13 @@ describe("Prediction Pool Contract Tests", () => {
     })
 
     it("should allow only Owner pause and unpause contract", async () => {
-      await expect(farm.pause({from: PrederB})).to.be.reverted
-      await expect(farm.unpause({from: PrederB})).to.be.reverted
+      await expect(farm.pause({from: PrederB})).to.be.reverted;
+      await expect(farm.unpause({from: PrederB})).to.be.reverted;
     })
 
     it("should not allow user to deposit and withdraw funds", async () => {
-      await expect(farm.deposit(0, 1000)).to.be.reverted
-      await expect(farm.withdraw(0, 1000)).to.be.reverted
+      await expect(farm.deposit(0, 1000)).to.be.reverted;
+      await expect(farm.withdraw(0, 1000)).to.be.reverted;
     })
 
     it("should withdraw funds and forfeit rewards with Emergency withdraw", async () => {
