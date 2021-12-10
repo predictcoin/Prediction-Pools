@@ -192,8 +192,8 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][_user];
         uint256 accPredPerShare = pool.accPredPerShare;
-        uint256 predSupply = pred.balanceOf(address(this));
-        if (block.number > pool.lastRewardBlock && predSupply != 0) {
+
+        if (block.number > pool.lastRewardBlock && pool.amount != 0) {
             uint256 multiplier = getMultiplier(
                 pool.lastRewardBlock,
                 block.number
@@ -208,7 +208,7 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
                 predReward = predBal;
             }
             accPredPerShare = accPredPerShare.add(
-                predReward.mul(1e30).div(predSupply)
+                predReward.mul(1e30).div(pool.amount)
             );
         }
         return user.amount.mul(accPredPerShare).div(1e30).sub(user.rewardDebt);
@@ -220,8 +220,8 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
         if (block.number <= pool.lastRewardBlock) {
             return;
         }
-        uint256 predSupply = pred.balanceOf(address(this));
-        if (predSupply == 0) {
+
+        if (pool.amount == 0) {
             pool.lastRewardBlock = block.number;
             return;
         }
@@ -234,7 +234,7 @@ contract WinnerPredictionPool is Initializable, PausableUpgradeable, UUPSUpgrade
         }
 
         pool.accPredPerShare = pool.accPredPerShare.add(
-            predReward.mul(1e30).div(predSupply)
+            predReward.mul(1e30).div(pool.amount)
         );
         totalRewardDebt = totalRewardDebt.add(predReward);
         pool.lastRewardBlock = block.number;

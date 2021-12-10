@@ -13,14 +13,14 @@ let signers: Signer[],
   prediction: Contract,
   Prediction: ContractFactory,
   Wallet: ContractFactory;
-const predPerBlock = 10000000;
+const predPerBlock = 50000000000;
 let walletContract: Contract;
 
 type pool = {
   lpToken: string, 
   allocPoint: _BigNumber, 
   lastRewardBlock: _BigNumber, 
-  accBNBPerShare: _BigNumber
+  accBIDPerShare: _BigNumber
 };
 
 let poolBefore: pool;
@@ -58,6 +58,7 @@ describe("Prediction Pool Contract Tests", () => {
     [PrederA, PrederB] = signers
 
     Prediction = await ethers.getContractFactory("Prediction");
+    
     prediction = await upgrades.deployProxy(
       Prediction,
       [
@@ -86,10 +87,13 @@ describe("Prediction Pool Contract Tests", () => {
     wallet = await Wallet.deploy(pred.address);
 
     Farm = await ethers.getContractFactory("LoserPredictionPool");
+
     //farm = await Farm.deploy(pred.address, predPerBlock, 0)
     farm = await upgrades.deployProxy(Farm, [
       await PrederA.getAddress(),
-      pred.address, predPerBlock, 0, 
+      pred.address, 
+      process.env.BID_ADDRESS,
+      predPerBlock, 0, 
       ethers.utils.parseEther("100"), 
       wallet.address, 
       prediction.address
@@ -105,7 +109,7 @@ describe("Prediction Pool Contract Tests", () => {
 
   it("should initialise contract state variables", async () => {
     expect(await farm.pred()).to.equal(pred.address);
-    expect(await farm.bnbPerBlock()).to.equal(predPerBlock);
+    expect(await farm.bidPerBlock()).to.equal(predPerBlock);
     expect(await farm.startBlock()).to.equal(0);
   })
 
@@ -130,7 +134,7 @@ describe("Prediction Pool Contract Tests", () => {
     const pool = await farm.poolInfo(0)
     expect(pool.allocPoint.toString()).to.equal("200");
     expect(pool.epoch).to.equal((await prediction.currentEpoch()).sub("1"));
-    expect(pool.accBNBPerShare.toString()).to.equal("0")
+    expect(pool.accBIDPerShare.toString()).to.equal("0")
   })
 
   it("should start another pool", async () => {
@@ -203,30 +207,30 @@ describe("Prediction Pool Contract Tests", () => {
       expect(userInfo.amount).to.equal(depositA)
       expect(userInfo.rewardDebt).to.equal(0)
       expect(await farm.totalRewardDebt()).to.equal(0)
-      expect(await farm.pendingBNB(0, await PrederA.getAddress())).to.equal(0)
+      expect(await farm.pendingBID(0, await PrederA.getAddress())).to.equal(0)
     })
 
     it("should update pool", async () => {
       const poolAfter = await farm.poolInfo(0)
       expect(poolAfter.lastRewardBlock).to.gt(poolBefore.lastRewardBlock)
-      expect(poolAfter.accBNBPerShare).to.equal(poolBefore.accBNBPerShare)
+      expect(poolAfter.accBIDPerShare).to.equal(poolBefore.accBIDPerShare)
     })
   
-    it("should update user pending Pred when wallet increases balance", async () => {
+    it("should update user pending BID when wallet increases balance", async () => {
       await pred.transfer(wallet.address, (10**17).toString());
       await farm.updatePool(0)
       const user = await farm.userInfo(0, await PrederA.getAddress())
       const pool = await farm.poolInfo(0)
       const pending = (multiplier*predPerBlock).toString();
-      expect(await farm.pendingBNB(0, await PrederA.getAddress()))
+      expect(await farm.pendingBID(0, await PrederA.getAddress()))
         .to.equal(
-          user.amount.mul(pool.accBNBPerShare).div((BigNumber.from(10).pow(30))).sub(user.rewardDebt)
+          user.amount.mul(pool.accBIDPerShare).div((BigNumber.from(10).pow(30))).sub(user.rewardDebt)
         )
     })
 
     it("it should withdraw user rewards with withdraw function", async () => {
       await pred.transfer(wallet.address, (10**17).toString());
-      const pending: BigNumber = await farm.pendingBNB(0, await PrederA.getAddress());
+      const pending: BigNumber = await farm.pendingBID(0, await PrederA.getAddress());
       let user = await farm.userInfo(0, await PrederA.getAddress())
 
       await expect(() => farm.withdraw(0, 0))
@@ -237,13 +241,13 @@ describe("Prediction Pool Contract Tests", () => {
       user = await farm.userInfo(0, await PrederA.getAddress())
       expect(user.amount).to.equal(depositA)
       expect(user.rewardDebt).to.equal(pending.mul(2))
-      expect(await farm.pendingBNB(0, await PrederA.getAddress())).to.equal(0);
+      expect(await farm.pendingBID(0, await PrederA.getAddress())).to.equal(0);
       expect(await farm.totalRewardDebt()).to.equal(0)
     })
 
     it("it should withdraw user rewards with deposit function", async () => {
       await pred.transfer(wallet.address, (10**17).toString());
-      const pending: BigNumber = await farm.pendingBNB(0, await PrederA.getAddress());
+      const pending: BigNumber = await farm.pendingBID(0, await PrederA.getAddress());
 
       await expect(() => farm.deposit(0, 0))
         .to.changeTokenBalances(
@@ -261,7 +265,7 @@ describe("Prediction Pool Contract Tests", () => {
 
     it("it should withdraw user balance and rewards", async () => {
       await pred.transfer(wallet.address, (10**17).toString());
-      const pending: BigNumber = await farm.pendingBNB(0, await PrederA.getAddress());
+      const pending: BigNumber = await farm.pendingBID(0, await PrederA.getAddress());
       let user = await farm.userInfo(0, await PrederA.getAddress())
       await farm.withdraw(0, depositA)
       user = await farm.userInfo(0, await PrederA.getAddress())
@@ -292,18 +296,18 @@ describe("Prediction Pool Contract Tests", () => {
       await farm.deposit(0, depositA);
     })
 
-    it.only("should update user info", async () => {
+    it("should update user info", async () => {
       const userInfo = await farm.userInfo(0, await PrederA.getAddress())
       
       await passInterval(network, prediction);
       await passInterval(network, prediction);
       await farm.updatePool(0);
-      const pending = await farm.pendingBNB(0, await PrederA.getAddress());
+      const pending = await farm.pendingBID(0, await PrederA.getAddress());
       console.log(pending);
       expect(userInfo.amount).to.equal(depositA);
       expect(userInfo.rewardDebt).to.equal(0);
       expect(await farm.totalRewardDebt()).to.equal(pending);
-      //expect(await farm.pendingBNB(0, await PrederA.getAddress())).to.equal(pending);
+      //expect(await farm.pendingBID(0, await PrederA.getAddress())).to.equal(pending);
     })
 
     it("should update pool", async () => {
@@ -311,8 +315,8 @@ describe("Prediction Pool Contract Tests", () => {
       const poolAfter = await farm.poolInfo(0)
 
       expect(poolAfter.lastRewardBlock).to.gt(poolBefore.lastRewardBlock)
-      expect(poolAfter.accBNBPerShare).to.equal(
-        poolBefore.accBNBPerShare.add(
+      expect(poolAfter.accBIDPerShare).to.equal(
+        poolBefore.accBIDPerShare.add(
           BigNumber.from(multiplier)
           .mul(predPerBlock)
           .mul((BigNumber.from(10).pow(30)).toString())

@@ -185,6 +185,19 @@
 			},
 			{
 				"inputs": [],
+				"name": "BID",
+				"outputs": [
+					{
+						"internalType": "contract IBEP20",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "BONUS_MULTIPLIER",
 				"outputs": [
 					{
@@ -224,7 +237,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "bnbPerBlock",
+				"name": "bidPerBlock",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -316,8 +329,13 @@
 						"type": "address"
 					},
 					{
+						"internalType": "contract IBEP20",
+						"name": "_bid",
+						"type": "address"
+					},
+					{
 						"internalType": "uint256",
-						"name": "_bnbPerBlock",
+						"name": "_bidPerBlock",
 						"type": "uint256"
 					},
 					{
@@ -442,7 +460,7 @@
 						"type": "address"
 					}
 				],
-				"name": "pendingBNB",
+				"name": "pendingBID",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -475,7 +493,7 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "accBNBPerShare",
+						"name": "accBIDPerShare",
 						"type": "uint256"
 					},
 					{
@@ -992,11 +1010,11 @@
 			]
 		},
 		"contracts/LoserPredictionPool.sol": {
-			"keccak256": "0x386fd3bf4f1025ee01a01dd043a9aa6bc1b8ff00405705f6fce7a6a9985cfced",
+			"keccak256": "0x93a7c144ec226cf257985b558a1580ebd3b8900e01b481661d40caa13ae78adc",
 			"license": "Unlicensed",
 			"urls": [
-				"bzz-raw://1cde1d8b3247ce1465fbb582f9d8d8285cd0c0f30346660b3564d442804ef964",
-				"dweb:/ipfs/QmaXayupeRv8MBNc7jZwL6SC2Fh4MW54MWW98nt7ZtGWm3"
+				"bzz-raw://cb8331ac8de8c10541fef4863c524d2a2cef47e4901e666e06916390bfdad8bc",
+				"dweb:/ipfs/QmTbQ8FnmBhEG93vJRk83YWQn8bZeEG38j7PDRRUq9w7bE"
 			]
 		},
 		"contracts/PredictionWallet.sol": {

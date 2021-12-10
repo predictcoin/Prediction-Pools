@@ -7,9 +7,9 @@ async function main() {
   const winnerFarm = await upgrades.upgradeProxy(process.env.WINNER_POOL_ADDRESS || "",
     WinnerFarm, {kind: "uups"}
   );
-  const loserFarm = await upgrades.upgradeProxy(process.env.LOSER_POOL_ADDRESS || "",
-    LoserFarm, {kind: "uups"}
-  );
+  // const loserFarm = await upgrades.upgradeProxy(process.env.LOSER_POOL_ADDRESS || "",
+  //   LoserFarm, {kind: "uups"}
+  // );
 
   console.log(process.env.WINNER_POOL_ADDRESS);
   console.log(process.env.LOSER_POOL_ADDRESS);
@@ -19,10 +19,10 @@ async function main() {
     "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
   )}`);
   
-  console.log(`LoserFarm implementation deployed to:${await ethers.provider.getStorageAt(
-    process.env.LOSER_POOL_ADDRESS || "",
-    "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
-  )}`);
+  // console.log(`LoserFarm implementation deployed to:${await ethers.provider.getStorageAt(
+  //   process.env.LOSER_POOL_ADDRESS || "",
+  //   "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
+  // )}`);
 }
 
 main()

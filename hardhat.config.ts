@@ -1,7 +1,9 @@
 import "@nomiclabs/hardhat-waffle";
 import '@openzeppelin/hardhat-upgrades'
-import {config} from "dotenv"
-config()
+import '@nomiclabs/hardhat-etherscan';
+import { config } from "dotenv";
+
+config();
 config({ path: `.env.${process.env.NODE_ENV}` });
 const mnemonic = process.env.MNEMONIC;
 
@@ -46,17 +48,20 @@ module.exports = {
     bscTestnet:{
       url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
       chainId: 97,
-      accounts: {mnemonic, path: "m/44'/60'/0'/0", inittialIndex: 0, count: 10},
+      accounts: {mnemonic, path: "m/44'/60'/0'/0", initialIndex: 0, count: 10},
       timeout: 200000
     },
     bscMainnet:{
       url: "https://bsc-dataseed1.binance.org",
       chainId: 56,
-      accounts: {mnemonic, path: "m/44'/60'/0'/0", inittialIndex: 0, count: 10},
+      accounts: {mnemonic, path: "m/44'/60'/0'/0", initialIndex: 0, count: 10},
       timeout: 200000
     }
   },
   mocha: {
     timeout: 200000
-  }
+  },
+  etherscan: {
+    apiKey: process.env.BSCSCAN_API_KEY,
+  },
 };

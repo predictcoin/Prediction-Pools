@@ -41,17 +41,19 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
     struct PoolInfo {
         uint256 allocPoint; // share of predPerBlock
         uint256 lastRewardBlock; // Last block number that PREDs distribution occurs.
-        uint256 accBNBPerShare; // Accumulated PREDs per share, times 1e12. See below.
+        uint256 accBIDPerShare; // Accumulated PREDs per share, times 1e12. See below.
         uint256 epoch; // epoch of round winners that can stake
         uint256 amount;
     }
 
     // The PRED TOKEN!
     IBEP20 public pred;
+    // The BID token
+    IBEP20 public BID;
     // Prediction contract
     IPrediction public prediction;
     // PRED tokens distributed per block.
-    uint256 public bnbPerBlock;
+    uint256 public bidPerBlock;
     // Bonus muliplier for early preders.
     uint256 public BONUS_MULTIPLIER;
     //contract holding PRED tokens
@@ -68,7 +70,7 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
     uint256 public startBlock;
     // Amount of Predictioin wallet balance already allocated to pools
     uint256 public totalRewardDebt;
-
+    // address of the operator
     address public operatorAddress;
 
     event Deposit(address indexed user, uint256 indexed pid, uint256 amount);
@@ -88,7 +90,8 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
     function initialize(
         address _operator,
         IBEP20 _pred,
-        uint256 _bnbPerBlock,
+        IBEP20 _bid,
+        uint256 _bidPerBlock,
         uint256 _startBlock,
         uint256 _maxPredDeposit,
         PredictionWallet _wallet,
@@ -98,7 +101,8 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
 
         operatorAddress = _operator;
         pred = _pred;
-        bnbPerBlock = _bnbPerBlock;
+        BID = _bid;
+        bidPerBlock = _bidPerBlock;
         startBlock = _startBlock;
         wallet = _wallet;
         prediction = _prediction;
@@ -153,7 +157,7 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
                 allocPoint: _allocPoint,
                 epoch: epoch,
                 lastRewardBlock: lastRewardBlock,
-                accBNBPerShare: 0,
+                accBIDPerShare: 0,
                 amount: 0
             })
         );
@@ -184,35 +188,34 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
         return _to.sub(_from).mul(BONUS_MULTIPLIER);
     }
 
-    // View function to see pending BNB on frontend.
-    function pendingBNB(uint256 _pid, address _user)
+    // View function to see pending BID on frontend.
+    function pendingBID(uint256 _pid, address _user)
         external
         view
         returns (uint256)
     {
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][_user];
-        uint256 accBNBPerShare = pool.accBNBPerShare;
-        uint256 predSupply = pred.balanceOf(address(this));
-        if (block.number > pool.lastRewardBlock && predSupply != 0) {
+        uint256 accBIDPerShare = pool.accBIDPerShare;
+        if (block.number > pool.lastRewardBlock && pool.amount != 0) {
             uint256 multiplier = getMultiplier(
                 pool.lastRewardBlock,
                 block.number
             );
-            uint256 bnbReward = multiplier
-            .mul(bnbPerBlock);
+            uint256 bidReward = multiplier
+            .mul(bidPerBlock);
 
-            uint256 bnbBal = (address(wallet).balance).sub(
+            uint256 bidBal = BID.balanceOf(address(wallet)).sub(
                 totalRewardDebt
             );
-            if (bnbReward >= bnbBal) {
-                bnbReward = bnbBal;
+            if (bidReward >= bidBal) {
+                bidReward = bidBal;
             }
-            accBNBPerShare = accBNBPerShare.add(
-                bnbReward.mul(1e30).div(predSupply)
+            accBIDPerShare = accBIDPerShare.add(
+                bidReward.mul(1e30).div(pool.amount)
             );
         }
-        return user.amount.mul(accBNBPerShare).div(1e30).sub(user.rewardDebt);
+        return user.amount.mul(accBIDPerShare).div(1e30).sub(user.rewardDebt);
     }
 
     // Update reward variables of the given pool to be up-to-date.
@@ -221,23 +224,22 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
         if (block.number <= pool.lastRewardBlock) {
             return;
         }
-        uint256 predSupply = pred.balanceOf(address(this));
-        if (predSupply == 0) {
+        if (pool.amount == 0) {
             pool.lastRewardBlock = block.number;
             return;
         }
         uint256 multiplier = getMultiplier(pool.lastRewardBlock, block.number);
-        uint256 predReward = multiplier
-            .mul(bnbPerBlock);
-        uint256 bnbBal = (address(wallet).balance).sub(totalRewardDebt);
-        if (predReward >= bnbBal) {
-            predReward = bnbBal;
+        uint256 bidReward = multiplier
+            .mul(bidPerBlock);
+        uint256 bidBal = BID.balanceOf(address(wallet)).sub(totalRewardDebt);
+        if (bidReward >= bidBal) {
+            bidReward = bidBal;
         }
 
-        pool.accBNBPerShare = pool.accBNBPerShare.add(
-            predReward.mul(1e30).div(predSupply)
+        pool.accBIDPerShare = pool.accBIDPerShare.add(
+            bidReward.mul(1e30).div(pool.amount)
         );
-        totalRewardDebt = totalRewardDebt.add(predReward);
+        totalRewardDebt = totalRewardDebt.add(bidReward);
         pool.lastRewardBlock = block.number;
     }
 
@@ -251,7 +253,7 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
         if (user.amount > 0) {
             uint256 pending = user
             .amount
-            .mul(pool.accBNBPerShare)
+            .mul(pool.accBIDPerShare)
             .div(1e30)
             .sub(user.rewardDebt);
             if (pending > 0) {
@@ -273,7 +275,7 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
             );
             require(user.amount <= maxPredDeposit, "Max PRED Deposit Reached");
         }
-        user.rewardDebt = user.amount.mul(pool.accBNBPerShare).div(1e30);
+        user.rewardDebt = user.amount.mul(pool.accBIDPerShare).div(1e30);
         poolInfo[_pid] = pool;
         emit Deposit(msg.sender, _pid, _amount);
     }
@@ -285,7 +287,7 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
         require(user.amount >= _amount, "withdraw: not good");
 
         updatePool(_pid);
-        uint256 pending = user.amount.mul(pool.accBNBPerShare).div(1e30).sub(
+        uint256 pending = user.amount.mul(pool.accBIDPerShare).div(1e30).sub(
             user.rewardDebt
         );
         if (pending > 0) {
@@ -296,7 +298,7 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
             pool.amount = pool.amount.sub(_amount);
             pred.safeTransfer(address(msg.sender), _amount);
         }
-        user.rewardDebt = user.amount.mul(pool.accBNBPerShare).div(1e30);
+        user.rewardDebt = user.amount.mul(pool.accBIDPerShare).div(1e30);
         poolInfo[_pid] = pool;
         emit Withdraw(msg.sender, _pid, _amount);
     }
@@ -310,7 +312,7 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
         user.amount = 0;
         user.rewardDebt = 0;
         uint256 pending = amount
-            .mul(pool.accBNBPerShare)
+            .mul(pool.accBIDPerShare)
             .div(1e30)
             .sub(user.rewardDebt);
         if (pending <= totalRewardDebt){
@@ -323,11 +325,11 @@ contract LoserPredictionPool is Initializable, PausableUpgradeable, UUPSUpgradea
     // Safe pred transfer function, just in case if rounding error causes pool to not have enough PREDs.
     function safePredTransfer(address _to, uint256 _amount) internal {
         totalRewardDebt = totalRewardDebt.sub(
-            wallet.safeBNBTransfer(_to, _amount)
+            wallet.safePredTransfer(BID, _to, _amount)
         );
     }
     
-    function setMaxPredDeposit(uint _maxPredDeposit) external {
+    function setMaxPredDeposit(uint _maxPredDeposit) external { 
         maxPredDeposit = _maxPredDeposit;
     }
 

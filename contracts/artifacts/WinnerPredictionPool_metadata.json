@@ -1000,11 +1000,11 @@
 			]
 		},
 		"contracts/WinnerPredictionPool.sol": {
-			"keccak256": "0x09b1e96c63cbde9204610636e1d912fc24e277a6a1db077415ba9de8cb0bd6a8",
+			"keccak256": "0x6a4002fadb51cd1d5522e3175467684ef24ed04d08a4d19a9d1caf05afbd5f93",
 			"license": "Unlicensed",
 			"urls": [
-				"bzz-raw://09bad387026c4af7313740d57cfce0944b29b4ddbb38582ad6f9c90695004864",
-				"dweb:/ipfs/QmXA5btwgo5UfNhvhjqqmTAQFLQuvCSYWGCvFUbRAMM3Ze"
+				"bzz-raw://9cd658c2c3fbbaa48c358258c0a68176063b73ef419b5c7b0ef5499d70a49162",
+				"dweb:/ipfs/QmccsRHy4iq1Xn4M4QFaW27qyNMdMwqfNVWyH8CnR7a8ac"
 			]
 		},
 		"contracts/interfaces/IBEP20.sol": {

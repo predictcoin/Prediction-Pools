@@ -869,7 +869,7 @@
       ]
     },
     "/Users/nonse/Desktop/Work/Predictcoin/Prediction pool/contracts/PredictionWallet.sol": {
-      "lastModificationDate": 1638091545226,
+      "lastModificationDate": 1638939202365,
       "contentHash": "09da8a091c67d628c1892f1c1a09883a",
       "sourceName": "contracts/PredictionWallet.sol",
       "solcConfig": {
@@ -908,7 +908,7 @@
       ]
     },
     "/Users/nonse/Desktop/Work/Predictcoin/Prediction pool/contracts/utils/SafeBEP20.sol": {
-      "lastModificationDate": 1636249237505,
+      "lastModificationDate": 1638584675516,
       "contentHash": "e44a69dc818507310961e15ae2c85d25",
       "sourceName": "contracts/utils/SafeBEP20.sol",
       "solcConfig": {
@@ -1332,7 +1332,7 @@
       ]
     },
     "/Users/nonse/Desktop/Work/Predictcoin/Prediction pool/contracts/LPTokens.sol": {
-      "lastModificationDate": 1637348516821,
+      "lastModificationDate": 1638977027770,
       "contentHash": "f12b2d885a3a50cbbfe2d3c26f134942",
       "sourceName": "contracts/LPTokens.sol",
       "solcConfig": {
@@ -1904,7 +1904,7 @@
       ]
     },
     "/Users/nonse/Desktop/Work/Predictcoin/Prediction pool/contracts/Prediction.sol": {
-      "lastModificationDate": 1637933480745,
+      "lastModificationDate": 1639092919086,
       "contentHash": "edb0de3cac8ea7185154ba788a314a39",
       "sourceName": "contracts/Prediction.sol",
       "solcConfig": {
@@ -1948,8 +1948,8 @@
       ]
     },
     "/Users/nonse/Desktop/Work/Predictcoin/Prediction pool/contracts/WinnerPredictionPool.sol": {
-      "lastModificationDate": 1638092199802,
-      "contentHash": "d9de3a351017d7558c0ff63e3a4c6ed7",
+      "lastModificationDate": 1639152868919,
+      "contentHash": "1cfb036de529c4c3aa080d27cb21f71e",
       "sourceName": "contracts/WinnerPredictionPool.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -1991,8 +1991,8 @@
       ]
     },
     "/Users/nonse/Desktop/Work/Predictcoin/Prediction pool/contracts/LoserPredictionPool.sol": {
-      "lastModificationDate": 1638092200116,
-      "contentHash": "ac1f1dc45213bcd1847bbbc6c4547da8",
+      "lastModificationDate": 1639152747942,
+      "contentHash": "6af29d904299f8845c67e41cfa8f9935",
       "sourceName": "contracts/LoserPredictionPool.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -2031,6 +2031,49 @@
       ],
       "artifacts": [
         "LoserPredictionPool"
+      ]
+    },
+    "/Users/nonse/Desktop/Work/Predictcoin/Prediction pool/contracts/LoserPredictionPool_Old.sol": {
+      "lastModificationDate": 1638979097589,
+      "contentHash": "249030e59653cdbd371de4611ccf3d24",
+      "sourceName": "contracts/LoserPredictionPool_Old.sol",
+      "solcConfig": {
+        "version": "0.8.2",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 99
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/utils/math/SafeMath.sol",
+        "./interfaces/IBEP20.sol",
+        "./interfaces/IPrediction.sol",
+        "./utils/SafeBEP20.sol",
+        "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol",
+        "./PredictionWallet.sol"
+      ],
+      "versionPragmas": [
+        "0.8.2"
+      ],
+      "artifacts": [
+        "LoserPredictionPool_Old"
       ]
     }
   }
